@@ -1,4 +1,4 @@
-module github.com/HoloPollock/randomLetterboxd
+module github.com/holopollock/LetterBoxd-Watchlist-Picker
 
 go 1.14
 
