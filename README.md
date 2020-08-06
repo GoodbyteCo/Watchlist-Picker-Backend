@@ -4,6 +4,9 @@ A Command line tool to pick a movie for you to watch from your letterboxd watch 
 
 ### Install
 
+#### Requirements
+Go must be installed to use 
+
 To install clone and then run the build.sh script
 
 ### Usage
