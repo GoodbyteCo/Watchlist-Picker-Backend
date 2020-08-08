@@ -11,7 +11,7 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
-type Film struct {
+type film struct {
 	Slug  string
 	Image string
 	Name  string
@@ -27,7 +27,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "please provide atleast one letterboxd username")
 		os.Exit(1)
 	}
-	var totalFilms []Film
+	var totalFilms []film
 	for _, a := range args {
 		fmt.Println(a)
 		userFilm := scrape(a)
@@ -40,17 +40,17 @@ func main() {
 
 }
 
-func scrape(userName string) []Film {
+func scrape(userName string) []film {
 	var wg sync.WaitGroup
 	siteToVisit := site + "/" + userName + "/watchlist"
 
-	var posters []Film
+	var posters []film
 	ajc := colly.NewCollector()
 	ajc.OnHTML("div.film-poster", func(e *colly.HTMLElement) {
 		name := e.Attr("data-film-name")
 		slug := e.Attr("data-target-link")
 		img := e.ChildAttr("img", "src")
-		tempfilm := Film{
+		tempfilm := film{
 			Slug:  (site + slug),
 			Image: img,
 			Name:  name,
