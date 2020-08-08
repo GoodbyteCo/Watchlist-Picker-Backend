@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gocolly/colly/v2"
-	"github.com/pkg/browser"
 )
 
 type Film struct {
@@ -22,16 +21,29 @@ const url = "https://letterboxd.com/ajax/poster"
 const urlEnd = "menu/linked/125x187/"
 const site = "https://letterboxd.com"
 
-var wg sync.WaitGroup
-
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "please provide letterboxd username")
+		fmt.Fprintln(os.Stderr, "please provide atleast one letterboxd username")
 		os.Exit(1)
 	}
-	siteToVisit := site + "/" + args[0] + "/watchlist"
+	var totalFilms []Film
+	for _, a := range args {
+		fmt.Println(a)
+		userFilm := scrape(a)
+		totalFilms = append(totalFilms, userFilm...)
+	}
 	rand.Seed(time.Now().Unix())
+	n := rand.Int() % len(totalFilms)
+	fmt.Println(len(totalFilms))
+	fmt.Println(totalFilms[n])
+
+}
+
+func scrape(userName string) []Film {
+	var wg sync.WaitGroup
+	siteToVisit := site + "/" + userName + "/watchlist"
+
 	var posters []Film
 	ajc := colly.NewCollector()
 	ajc.OnHTML("div.film-poster", func(e *colly.HTMLElement) {
@@ -66,7 +78,5 @@ func main() {
 
 	c.Visit(siteToVisit)
 
-	n := rand.Int() % len(posters)
-	browser.OpenURL(posters[n].Slug)
-
+	return posters
 }
