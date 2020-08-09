@@ -37,7 +37,7 @@ func main() {
 	n := rand.Int() % len(totalFilms)
 	fmt.Println(len(totalFilms))
 	fmt.Println(totalFilms[n])
-
+	browser.OpenURL(totalFilms[n].Slug)
 }
 
 func scrape(userName string) []film {
