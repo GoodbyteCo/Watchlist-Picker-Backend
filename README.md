@@ -1,16 +1,14 @@
-# LetterBoxd-Watchlist-Picker
+# random-letterboxd
 
 A Command line tool to pick a movie for you to watch from your letterboxd watch list
 
 ### Install
 
-To install clone and then run the build.sh script
-Or run `go get github.com/holopollock/LetterBoxd-Watchlist-Picker`
+#### Without Go
+To install without go clone and then run the build.sh script
 
-#### Requirements
-Go must be installed to use 
-
-
+#### With Go
+run `go get github.com/holopollock/random-letterboxd`
 
 ### Usage
 
