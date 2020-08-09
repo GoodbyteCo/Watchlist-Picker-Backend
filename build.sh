@@ -1,5 +1,5 @@
 #!/bin/bash
 
-go build random-letterbox.go
+go build random-letterboxd.go
 
-mv random-letterbox /usr/local/bin
+mv random-letterboxd /usr/local/bin
