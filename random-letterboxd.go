@@ -1,21 +1,23 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/gocolly/colly/v2"
-	"github.com/pkg/browser"
 )
 
 type film struct {
-	Slug  string
-	Image string
-	Name  string
+	Slug  string `json:"slug"`
+	Image string `json:"image_url"`
+	Name  string `json:"film_name"`
 }
 
 type filmSend struct {
@@ -28,15 +30,41 @@ const urlEnd = "menu/linked/125x187/"
 const site = "https://letterboxd.com"
 
 func main() {
-	args := os.Args[1:]
-	var user int = 0
-	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "please provide atleast one letterboxd username")
-		os.Exit(1)
+	getFilmHandler := http.HandlerFunc(getFilm)
+	http.Handle("/film", getFilmHandler)
+	fmt.Println("serving at :8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
 	}
+
+	log.Printf("Listening on port %s", port)
+	http.ListenAndServe(":"+port, nil)
+}
+
+func getFilm(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	query := r.URL.Query()
+	users, ok := query["users"]
+	if !ok || len(users) == 0 {
+		http.Error(w, "no users", 402)
+	}
+	fmt.Println(users)
+	userFilm := scrapeUser(users)
+	js, err := json.Marshal(userFilm)
+	if err != nil {
+		http.Error(w, "internal error", 500)
+	}
+	w.Write(js)
+
+}
+
+func scrapeUser(users []string) film {
+	var user int = 0
 	var totalFilms []film
 	ch := make(chan filmSend)
-	for _, a := range args {
+	for _, a := range users {
 		fmt.Println(a)
 		user++
 		go scrape(a, ch)
@@ -57,7 +85,7 @@ func main() {
 	n := rand.Int() % len(totalFilms)
 	fmt.Println(len(totalFilms))
 	fmt.Println(totalFilms[n])
-	browser.OpenURL(totalFilms[n].Slug)
+	return totalFilms[n]
 }
 
 func scrape(userName string, ch chan filmSend) {
@@ -112,4 +140,8 @@ func done() filmSend {
 		film: film{},
 		ok:   false,
 	}
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
