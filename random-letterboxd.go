@@ -99,7 +99,7 @@ func scrape(userName string, ch chan filmSend) {
 		img := e.ChildAttr("img", "src")
 		tempfilm := film{
 			Slug:  (site + slug),
-			Image: img,
+			Image: makeBigger(img),
 			Name:  name,
 		}
 		ch <- ok(tempfilm)
@@ -144,4 +144,8 @@ func done() filmSend {
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func makeBigger(url string) string {
+	return strings.ReplaceAll(url, "-0-125-0-187-", "-0-230-0-345-")
 }
