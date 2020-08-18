@@ -88,7 +88,7 @@ func scrapeUser(users []string) film {
 	if len(totalFilms) == 0 {
 		return film{}
 	}
-	n := rand.Int() % len(totalFilms)
+	n := rand.Intn(len(totalFilms))
 	log.Println(len(totalFilms))
 	log.Println(n)
 	log.Println(totalFilms[n])
