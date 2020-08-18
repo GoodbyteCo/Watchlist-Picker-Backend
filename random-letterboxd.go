@@ -54,6 +54,9 @@ func main() {
 
 	}
 	rand.Seed(time.Now().Unix())
+	if len(totalFilms) == 0 {
+		return
+	}
 	n := rand.Int() % len(totalFilms)
 	fmt.Println(len(totalFilms))
 	fmt.Println(totalFilms[n])
