@@ -48,10 +48,13 @@ func getFilm(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	users, ok := query["users"]
 	if !ok || len(users) == 0 {
-		http.Error(w, "no users", 402)
+		http.Error(w, "no users", 400)
 	}
 	fmt.Println(users)
 	userFilm := scrapeUser(users)
+	if (userFilm == film{}) {
+		http.Error(w, "no users", 404)
+	}
 	js, err := json.Marshal(userFilm)
 	if err != nil {
 		http.Error(w, "internal error", 500)
@@ -82,6 +85,9 @@ func scrapeUser(users []string) film {
 
 	}
 	rand.Seed(time.Now().Unix())
+	if len(totalFilms) == 0 {
+		return film{}
+	}
 	n := rand.Int() % len(totalFilms)
 	log.Println(len(totalFilms))
 	log.Println(n)
