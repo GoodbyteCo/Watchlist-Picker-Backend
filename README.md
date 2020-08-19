@@ -1,6 +1,6 @@
 # random-letterboxd
 
-Backend for [Watchlist Picker](watchlistpicker.com)
+Backend for [Watchlist Picker](https://watchlistpicker.com)
 
 ### Install
 Requires go
