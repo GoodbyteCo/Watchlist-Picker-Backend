@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/gocolly/colly/v2"
@@ -104,7 +103,6 @@ func scrapeUser(users []string) film {
 
 //function to scapre an single user
 func scrape(userName string, ch chan filmSend) {
-	var wg sync.WaitGroup //wait group to wait for scapre to complete as each film being scraped is done in its own go routine
 	siteToVisit := site + "/" + userName + "/watchlist"
 
 	ajc := colly.NewCollector()
@@ -118,17 +116,16 @@ func scrape(userName string, ch chan filmSend) {
 			Name:  name,
 		}
 		ch <- ok(tempfilm)
-		wg.Done()
 	})
-	c := colly.NewCollector()
-	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 50})
+	c := colly.NewCollector(
+		colly.Async(true),
+	)
+	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 100})
 	c.OnHTML(".poster-container", func(e *colly.HTMLElement) { //primary scarer to get url of each film that contian full information
 		e.ForEach("div.film-poster", func(i int, ein *colly.HTMLElement) {
 			slug := ein.Attr("data-film-slug")
-			wg.Add(1)
-			go ajc.Visit(url + slug + urlEnd) //start go routine to collect all film data
+			ajc.Visit(url + slug + urlEnd) //start go routine to collect all film data
 		})
-		wg.Wait()
 
 	})
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
@@ -139,6 +136,7 @@ func scrape(userName string, ch chan filmSend) {
 	})
 
 	c.Visit(siteToVisit)
+	c.Wait()
 	ch <- done() // users has finished so send done through channel
 
 }
