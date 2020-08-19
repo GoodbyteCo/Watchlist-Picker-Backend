@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -33,7 +32,7 @@ const site = "https://letterboxd.com"
 func main() {
 	getFilmHandler := http.HandlerFunc(getFilm)
 	http.Handle("/film", getFilmHandler)
-	fmt.Println("serving at :8080")
+	log.Println("serving at :8080")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -49,17 +48,20 @@ func getFilm(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	query := r.URL.Query() //Get URL Params(type map)
 	users, ok := query["users"]
+	log.Println(len(users))
 	if !ok || len(users) == 0 {
 		http.Error(w, "no users", 400)
+		return
 	}
-	fmt.Println(users)
 	userFilm := scrapeUser(users)
 	if (userFilm == film{}) {
 		http.Error(w, "no users", 404)
+		return
 	}
 	js, err := json.Marshal(userFilm)
 	if err != nil {
 		http.Error(w, "internal error", 500)
+		return
 	}
 	w.Write(js)
 
@@ -72,7 +74,7 @@ func scrapeUser(users []string) film {
 	ch := make(chan filmSend) //channel to send films over
 	// start go routine to scrape each user
 	for _, a := range users {
-		fmt.Println(a)
+		log.Println(a)
 		user++
 		go scrape(a, ch)
 	}
