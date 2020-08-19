@@ -1,4 +1,4 @@
-# random-letterboxd
+# Watchlist-Picker-Backend
 
 Backend for [Watchlist Picker](https://watchlistpicker.com)
 
