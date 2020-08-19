@@ -95,7 +95,7 @@ func scrapeUser(users []string) film {
 	if len(totalFilms) == 0 {
 		return film{}
 	}
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UTC().UnixNano())
 	n := rand.Intn(len(totalFilms))
 	log.Println(len(totalFilms))
 	log.Println(n)
