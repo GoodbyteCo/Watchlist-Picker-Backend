@@ -6,11 +6,7 @@ Backend for [Watchlist Picker](https://watchlistpicker.com)
 Requires go
 
 #### run locally for testing
-In the repo run `go run random-letterboxd.go` this will launch a localhost server at port 8080 by default but the port can be set by setting the ENV variable of PORT
-
-### Usage
-
-To use run `random-letterboxd USERNAME`
+In the repo run `go run random-main.go` this will launch a localhost server at port 8080 by default but the port can be set by setting the ENV variable of PORT
 
 #### Notes
 
