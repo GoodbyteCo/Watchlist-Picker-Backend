@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/gocolly/colly/v2"
@@ -20,7 +19,7 @@ type film struct {
 
 type filmSend struct {
 	film film
-	ok   bool
+	done bool
 }
 
 const url = "https://letterboxd.com/ajax/poster"
@@ -43,7 +42,7 @@ func main() {
 	}
 	for {
 		userFilm := <-ch
-		if userFilm.ok == false {
+		if userFilm.done {
 			user--
 			if user == 0 {
 				break
@@ -64,7 +63,6 @@ func main() {
 }
 
 func scrape(userName string, ch chan filmSend) {
-	var wg sync.WaitGroup
 	siteToVisit := site + "/" + userName + "/watchlist"
 
 	ajc := colly.NewCollector()
@@ -78,17 +76,17 @@ func scrape(userName string, ch chan filmSend) {
 			Name:  name,
 		}
 		ch <- ok(tempfilm)
-		wg.Done()
 	})
-	c := colly.NewCollector()
-	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 50})
+	c := colly.NewCollector(
+		colly.Async(true),
+	)
+
+	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 100})
 	c.OnHTML(".poster-container", func(e *colly.HTMLElement) {
 		e.ForEach("div.film-poster", func(i int, ein *colly.HTMLElement) {
 			slug := ein.Attr("data-film-slug")
-			wg.Add(1)
-			go ajc.Visit(url + slug + urlEnd)
+			ajc.Visit(url + slug + urlEnd)
 		})
-		wg.Wait()
 
 	})
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
@@ -99,6 +97,7 @@ func scrape(userName string, ch chan filmSend) {
 	})
 
 	c.Visit(siteToVisit)
+	c.Wait()
 	ch <- done()
 
 }
@@ -106,13 +105,13 @@ func scrape(userName string, ch chan filmSend) {
 func ok(f film) filmSend {
 	return filmSend{
 		film: f,
-		ok:   true,
+		done: false,
 	}
 }
 
 func done() filmSend {
 	return filmSend{
 		film: film{},
-		ok:   false,
+		done: true,
 	}
 }
