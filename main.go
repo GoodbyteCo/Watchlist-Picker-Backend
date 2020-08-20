@@ -150,8 +150,10 @@ func scrape(userName string, ch chan filmSend) {
 
 }
 
-func scrapeList(listname string, ch chan filmSend) {
+func scrapeList(listnameIn string, ch chan filmSend) {
 	siteToVisit := ""
+	listname := strings.ToLower(listnameIn)
+
 	if strings.Contains(listname, "/list/") {
 		siteToVisit = site + "/" + listname
 	} else {
