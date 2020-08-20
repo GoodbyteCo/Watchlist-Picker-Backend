@@ -107,7 +107,9 @@ func scrapeUser(users []string) film {
 func scrape(userName string, ch chan filmSend) {
 	siteToVisit := site + "/" + userName + "/watchlist"
 
-	ajc := colly.NewCollector()
+	ajc := colly.NewCollector(
+		colly.Async(true),
+	)
 	ajc.OnHTML("div.film-poster", func(e *colly.HTMLElement) { //secondard cleector to get main data for film
 		name := e.Attr("data-film-name")
 		slug := e.Attr("data-target-link")
@@ -139,6 +141,7 @@ func scrape(userName string, ch chan filmSend) {
 
 	c.Visit(siteToVisit)
 	c.Wait()
+	ajc.Wait()
 	ch <- done() // users has finished so send done through channel
 
 }
