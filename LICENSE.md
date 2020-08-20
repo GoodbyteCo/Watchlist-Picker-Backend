@@ -1,8 +1,8 @@
 # The Parity Public License 7.0.0
 
-Contributor: $name
+Contributor: Goodbyte
 
-Source Code: $address
+Source Code: https://github.com/GoodbyteCo/Watchlist-Picker-Backend
 
 ## Purpose
 
