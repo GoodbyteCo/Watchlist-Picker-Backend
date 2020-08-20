@@ -170,7 +170,7 @@ func scrapeList(listname string, ch chan filmSend) {
 		img := e.ChildAttr("img", "src")
 		tempfilm := film{
 			Slug:  (site + slug),
-			Image: img,
+			Image: makeBigger(img),
 			Name:  name,
 		}
 		ch <- ok(tempfilm)
