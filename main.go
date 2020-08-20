@@ -152,7 +152,7 @@ func scrape(userName string, ch chan filmSend) {
 
 func scrapeList(listname string, ch chan filmSend) {
 	siteToVisit := ""
-	if strings.Contains(listname, "list") {
+	if strings.Contains(listname, "/list/") {
 		siteToVisit = site + "/" + listname
 	} else {
 		strslice := strings.Split(listname, "/") //strslice[0] is user name strslice[1] is listname
