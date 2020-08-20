@@ -76,7 +76,11 @@ func scrapeUser(users []string) film {
 	for _, a := range users {
 		log.Println(a)
 		user++
-		go scrape(a, ch)
+		if strings.Contains(a, "/") {
+			go scrapeList(a, ch)
+		} else {
+			go scrape(a, ch)
+		}
 	}
 	for {
 		userFilm := <-ch
@@ -143,6 +147,57 @@ func scrape(userName string, ch chan filmSend) {
 	c.Wait()
 	ajc.Wait()
 	ch <- done() // users has finished so send done through channel
+
+}
+
+func scrapeList(listname string, ch chan filmSend) {
+	siteToVisit := ""
+	if strings.Contains(listname, "list") {
+		siteToVisit = site + "/" + listname
+	} else {
+		strslice := strings.Split(listname, "/") //strslice[0] is user name strslice[1] is listname
+		siteToVisit = site + "/" + strslice[0] + "/list/" + strslice[1]
+
+	}
+	log.Println(siteToVisit)
+
+	ajc := colly.NewCollector(
+		colly.Async(true),
+	)
+	ajc.OnHTML("div.film-poster", func(e *colly.HTMLElement) {
+		name := e.Attr("data-film-name")
+		slug := e.Attr("data-target-link")
+		img := e.ChildAttr("img", "src")
+		tempfilm := film{
+			Slug:  (site + slug),
+			Image: img,
+			Name:  name,
+		}
+		ch <- ok(tempfilm)
+	})
+	c := colly.NewCollector(
+		colly.Async(true),
+	)
+
+	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 100})
+	c.OnHTML(".poster-container", func(e *colly.HTMLElement) {
+		e.ForEach("div.film-poster", func(i int, ein *colly.HTMLElement) {
+			slug := ein.Attr("data-film-slug")
+			ajc.Visit(url + slug + urlEnd)
+		})
+
+	})
+	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
+		link := e.Attr("href")
+		if strings.Contains(link, "/page") {
+			e.Request.Visit(e.Request.AbsoluteURL(link))
+		}
+	})
+
+	c.Visit(siteToVisit)
+	c.Wait()
+	ajc.Wait()
+	ch <- done()
 
 }
 
