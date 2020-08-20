@@ -1,4 +1,4 @@
-# The Parity Public License 7.0.0
+# The Prosperity Public License 3.0.0
 
 Contributor: Goodbyte
 
@@ -6,7 +6,7 @@ Source Code: https://github.com/GoodbyteCo/Watchlist-Picker-Backend
 
 ## Purpose
 
-This license allows you to use and share this software for free, but you have to share software that builds on it alike.
+This license allows you to use and share this software for noncommercial purposes for free and to try this software for commercial purposes for thirty days.
 
 ## Agreement
 
@@ -16,39 +16,21 @@ In order to receive this license, you have to agree to its rules.  Those rules a
 
 Make sure everyone who gets a copy of any part of this software from you, with or without changes, also gets the text of this license and the contributor and source code lines above.
 
-## Copyleft
+## Commercial Trial
 
-[Contribute](#contribute) software you develop, operate, or analyze with this software, including changes or additions to this software.  When in doubt, [contribute](#contribute).
+Limit your use of this software for commercial purposes to a thirty-day trial period.  If you use this software for work, your company gets one trial period for all personnel, not one trial per person.
 
-## Prototypes
+## Contributions Back
 
-You don't have to [contribute](#contribute) any change, addition, or other software that meets all these criteria:
+Developing feedback, changes, or additions that you contribute back to the contributor on the terms of a standardized public software license such as [the Blue Oak Model License 1.0.0](https://blueoakcouncil.org/license/1.0.0), [the Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html), [the MIT license](https://spdx.org/licenses/MIT.html), or [the two-clause BSD license](https://spdx.org/licenses/BSD-2-Clause.html) doesn't count as use for a commercial purpose.
 
-1.  You don't use it for more than thirty days.
+## Personal Uses
 
-2.  You don't share it outside the team developing it, other than for non-production user testing.
+Personal use for research, experiment, and testing for the benefit of public knowledge, personal study, private entertainment, hobby projects, amateur pursuits, or religious observance, without any anticipated commercial application, doesn't count as use for a commercial purpose.
 
-3.  You don't develop, operate, or analyze other software with it for anyone outside the team developing it.
+## Noncommercial Organizations
 
-## Reverse Engineering
-
-You may use this software to operate and analyze software you can't [contribute](#contribute) in order to develop alternatives you can and do [contribute](#contribute).
-
-## Contribute
-
-To [contribute](#contribute) software:
-
-1.  Publish all source code for the software in the preferred form for making changes through a freely accessible distribution system widely used for similar source code so the contributor and others can find and copy it.
-
-2.  Make sure every part of the source code is available under this license or another license that allows everything this license does, such as [the Blue Oak Model License 1.0.0](https://blueoakcouncil.org/license/1.0.0), [the Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html), [the MIT license](https://spdx.org/licenses/MIT.html), or [the two-clause BSD license](https://spdx.org/licenses/BSD-2-Clause.html).
-
-3.  Take these steps within thirty days.
-
-4.  Note that this license does _not_ allow you to change the license terms for this software.  You must follow [Notices](#notices).
-
-## Excuse
-
-You're excused for unknowingly breaking [Copyleft](#copyleft) if you [contribute](#contribute) as required, or stop doing anything requiring this license, within thirty days of learning you broke the rule.  You're excused for unknowingly breaking [Notices](#notices) if you take all practical steps to comply within thirty days of learning you broke the rule.
+Use by any charitable organization, educational institution, public research organization, public safety or health organization, environmental protection organization, or government institution doesn't count as use for a commercial purpose regardless of the source of funding or obligations resulting from the funding.
 
 ## Defense
 
@@ -65,6 +47,10 @@ The contributor licenses you to do everything with this software that would othe
 ## Reliability
 
 The contributor can't revoke this license.
+
+## Excuse
+
+You're excused for unknowingly breaking [Notices](#notices) if you take all practical steps to comply within thirty days of learning you broke the rule.
 
 ## No Liability
 
