@@ -1,3 +1,8 @@
+<a href="https://github.com/GoodbyteCo/Watchlist-Picker-Backend">
+  <img width="230" alt="Watchlist Picker Development" src="dev-logo.png">
+</a>
+
+<br><br><br>
 # Watchlist-Picker-Backend
 
 Backend for [Watchlist Picker](https://watchlistpicker.com)
